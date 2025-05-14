@@ -5,7 +5,7 @@
             <flux:tab name="html">Html</flux:tab>
             <flux:tab name="text">Text</flux:tab>
             <flux:tab name="raw">Raw</flux:tab>
-            <flux:tab name="attachments">Attachments</flux:tab>
+            <flux:tab name="attachments" :disabled="!$has_attachments">Attachments</flux:tab>
 
         </flux:tabs>
 
