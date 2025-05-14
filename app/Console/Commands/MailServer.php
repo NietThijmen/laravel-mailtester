@@ -14,7 +14,7 @@ class MailServer extends Command
      *
      * @var string
      */
-    protected $signature = 'mail:server {--port=25}';
+    protected $signature = 'mail:server {--port=2025}';
 
     /**
      * The console command description.
@@ -30,8 +30,6 @@ class MailServer extends Command
     {
         try {
             $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
-
-            $logger = Log::getLogger();
             $dispatcher->addSubscriber(new SmtpSubscriber($this));
 
             $loop = \React\EventLoop\Factory::create();
