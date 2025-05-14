@@ -86,8 +86,26 @@
 
         </flux:tab.panel>
 
-        <flux:tab.panel name="chat">
-            TODO: Add chat feature for collaboration
+        <flux:tab.panel name="chat" wire:poll>
+            @foreach($email->comments as $comment)
+                <div class="flex flex-col gap-2">
+                    <p class="text-sm text-gray-500">
+                        <strong>From:</strong> {{ $comment->user->name }}<br>
+                        <strong>Created At:</strong> {{ $comment->created_at }}<br>
+                        <strong>Comment:</strong> {{ $comment->message }}<br>
+                    </p>
+                </div>
+            @endforeach
+
+
+            <div class="flex flex-col gap-2 mt-5">
+                <flux:textarea
+                    :label="__('Comment')"
+                    wire:model.defer="comment"
+                    :placeholder="__('Add a comment')"
+                />
+                <flux:button wire:click="addComment">Add Comment</flux:button>
+            </div>
         </flux:tab.panel>
 
 

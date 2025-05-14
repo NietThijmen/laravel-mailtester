@@ -27,4 +27,9 @@ class Email extends Model implements HasMedia
     {
         return $this->belongsTo(MailAccount::class, 'mail_account_id');
     }
+
+    public function comments()
+    {
+        return $this->hasMany(EmailComment::class);
+    }
 }
