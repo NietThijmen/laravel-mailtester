@@ -17,18 +17,20 @@
                 </flux:navlist.group>
             </flux:navlist>
 
-            <flux:spacer />
+            <flux:separator/>
 
             <flux:navlist variant="outline">
-                <flux:navlist.item icon="folder-git-2" href="https://github.com/laravel/livewire-starter-kit" target="_blank">
-                {{ __('Repository') }}
-                </flux:navlist.item>
+                <flux:navlist.group :heading="__('Accounts')" class="grid">
+                @foreach(\App\Models\MailAccount::all() as $account)
+                    <flux:navlist.item icon="envelope" :href="route('account.overview', $account->id)" :current="request()->routeIs('account.overview', ['account' => $account->id])" wire:navigate>{{ $account->username }}</flux:navlist.item>
+                @endforeach
 
-                <flux:navlist.item icon="book-open-text" href="https://laravel.com/docs/starter-kits#livewire" target="_blank">
-                {{ __('Documentation') }}
-                </flux:navlist.item>
+                    <flux:navlist.item icon="plus"  :href="route('account.create')" :current="request()->routeIs('account.create')" wire:navigate>{{ __('Add Account') }}</flux:navlist.item>
+
+                </flux:navlist.group>
             </flux:navlist>
 
+            <flux:spacer />
             <!-- Desktop User Menu -->
             <flux:dropdown position="bottom" align="start">
                 <flux:profile

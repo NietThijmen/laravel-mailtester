@@ -19,4 +19,14 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
+
+Route::middleware(['auth'])->prefix('account')->group(function () {
+    Route::get('/create', \App\Livewire\Email\CreateAccount::class)->name('account.create');
+    Route::get('/{account}', \App\Livewire\Email\AccountOverview::class)->name('account.overview');
+});
+
+Route::middleware(['auth'])->prefix('emails')->group(function () {
+    Route::get('/{email}', \App\Livewire\Email\Detail::class)->name('emails.detail');
+});
+
 require __DIR__.'/auth.php';
