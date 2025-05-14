@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
 
         MailAccount::factory()->create([
             'username' => 'test@example.com',
-            'password' => "password"
+            'password' => 'password',
         ]);
     }
 }

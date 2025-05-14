@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use App\Mailserver\SMTP\SmtpServer;
 use App\Mailserver\SMTP\SmtpSubscriber;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 
 class MailServer extends Command
 {
@@ -29,7 +28,7 @@ class MailServer extends Command
     public function handle()
     {
         try {
-            $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+            $dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher;
             $dispatcher->addSubscriber(new SmtpSubscriber($this));
 
             $loop = \React\EventLoop\Factory::create();
@@ -42,11 +41,10 @@ class MailServer extends Command
             ];
 
             $this->info("Starting mail server on port {$this->option('port')}...");
-            $this->info("Press Ctrl+C to stop the server.");
+            $this->info('Press Ctrl+C to stop the server.');
             $server->listen($this->option('port'));
             $loop->run();
-        }
-        catch(\Exception $e) {
+        } catch (\Exception $e) {
             dd($e);
         }
     }

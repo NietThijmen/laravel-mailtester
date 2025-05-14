@@ -6,7 +6,6 @@ use App\Mail\TestMail;
 use App\Models\Email;
 use App\Models\MailAccount;
 use Illuminate\Console\Command;
-use Illuminate\Mail\Mailable;
 
 class SendTestEmail extends Command
 {
@@ -34,17 +33,15 @@ class SendTestEmail extends Command
 
         // check if mail account is created
         $account = MailAccount::first();
-        if(!$account) {
-            $this->info("Creating test mail account...");
-            $account = new MailAccount();
-            $account->username = "test@example.com";
-            $account->password = "password";
+        if (! $account) {
+            $this->info('Creating test mail account...');
+            $account = new MailAccount;
+            $account->username = 'test@example.com';
+            $account->password = 'password';
             $account->save();
         }
 
         $mail_count = Email::count();
-
-
 
         // set the config values to the test values
         config(['mail.default' => 'smtp']);
@@ -59,21 +56,21 @@ class SendTestEmail extends Command
 
         try {
             \Mail::to('test@test.com')
-                ->send(new TestMail());
+                ->send(new TestMail);
         } catch (\Throwable $throwable) {
-            $this->error('Error sending email: ' . $throwable->getMessage());
+            $this->error('Error sending email: '.$throwable->getMessage());
+
             return;
         }
 
         // check if the email was sent
         $new_mail_count = Email::count();
 
-        if($new_mail_count === $mail_count) {
+        if ($new_mail_count === $mail_count) {
             $this->error('Email not sent');
         } else {
             $this->info('Email sent successfully');
         }
-
 
     }
 }
