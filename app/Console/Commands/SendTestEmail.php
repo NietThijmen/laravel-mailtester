@@ -57,8 +57,13 @@ class SendTestEmail extends Command
         config(['mail.from.address' => $account->username]);
         config(['mail.from.name' => 'Test Mail']);
 
-        \Mail::to('test@test.com')
-            ->send(new TestMail());
+        try {
+            \Mail::to('test@test.com')
+                ->send(new TestMail());
+        } catch (\Throwable $throwable) {
+            $this->error('Error sending email: ' . $throwable->getMessage());
+            return;
+        }
 
         // check if the email was sent
         $new_mail_count = Email::count();
