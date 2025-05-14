@@ -7,6 +7,8 @@
             <flux:tab name="raw">Raw</flux:tab>
             <flux:tab name="attachments" :disabled="!$has_attachments">Attachments</flux:tab>
 
+            <flux:tab name="chat">Chat</flux:tab>
+
         </flux:tabs>
 
 
@@ -26,9 +28,9 @@
                     devices: ['desktop', 'tablet', 'mobile'],
 
                     size: {
-                        desktop: { width: 1920, height: 1080 }, // Desktop
-                        tablet: { width: 1668, height: 2388 }, // Ipad Pro
-                        mobile: { width: 1179, height: 2556 } // Iphone X
+                        desktop: { width: 960, height: 540 }, // Desktop (scale: 50%)
+                        tablet: { width: 834, height: 1194 }, // Ipad Pro
+                        mobile: { width: 590, height: 1278 } // Iphone X
                     },
                 }"
             >
@@ -84,6 +86,11 @@
 
         </flux:tab.panel>
 
+        <flux:tab.panel name="chat">
+            TODO: Add chat feature for collaboration
+        </flux:tab.panel>
 
-    </flux:tab.group>
+
+
+        </flux:tab.group>
 </div>
