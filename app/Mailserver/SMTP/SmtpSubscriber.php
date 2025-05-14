@@ -5,6 +5,7 @@ namespace App\Mailserver\SMTP;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Laravel\Pulse\Facades\Pulse;
+use Psy\Util\Str;
 use Smalot\Smtp\Server\Event\MessageReceivedEvent;
 use Smalot\Smtp\Server\Event\MessageSentEvent;
 use Smalot\Smtp\Server\Events;
@@ -73,6 +74,27 @@ class SmtpSubscriber implements EventSubscriberInterface
         $email->mail_account_id = $mail_account->id; // TODO: get the mail account id from the event
         $email->save();
         $this->command->info('Email saved to database');
+
+
+
+        $attachments = $parser->getAttachments();
+        if(count($attachments) == 0) {
+            $this->command->info("No attachments found");
+        }
+
+        foreach ($attachments as $attachment) {
+            $this->command->info('Attachment found: '.$attachment->getFilename());
+
+            $uuid = \Illuminate\Support\Str::uuid()->toString();
+
+            $path = "emails/{$mail_account->id}/{$uuid}/{$attachment->getFilename()}";
+            // write to disk
+            \Storage::write($path, $attachment->getContent());
+
+            $email->addMedia(\Storage::path($path))
+                ->preservingOriginal()
+                ->toMediaCollection('attachments');
+        }
 
 
         Pulse::record(

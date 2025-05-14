@@ -18,7 +18,8 @@
         "livewire/flux-pro": "^2.1",
         "livewire/volt": "^1.7.0",
         "nietthijmen/smtp-server": "dev-master",
-        "php-mime-mail-parser/php-mime-mail-parser": "^9.0"
+        "php-mime-mail-parser/php-mime-mail-parser": "^9.0",
+        "spatie/laravel-medialibrary": "^11.12"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

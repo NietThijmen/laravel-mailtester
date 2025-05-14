@@ -20,7 +20,44 @@
 
         </flux:tab.panel>
         <flux:tab.panel name="html">
-            <iframe srcdoc="{{ $email->html }}" class="w-full min-h-96 max-h-screen overflow-y-scroll"></iframe>
+            <div
+                x-data="{
+                    device: 'desktop',
+                    devices: ['desktop', 'tablet', 'mobile'],
+
+                    size: {
+                        desktop: { width: 1920, height: 1080 }, // Desktop
+                        tablet: { width: 1668, height: 2388 }, // Ipad Pro
+                        mobile: { width: 1179, height: 2556 } // Iphone X
+                    },
+                }"
+            >
+
+                <template x-for="deviceOption in devices">
+                    <flux:button
+                        x-on:click="
+                        device = deviceOption;
+                        "
+
+                        class="px-2 py-1 text-sm rounded-md"
+                    >
+                        <span x-text="deviceOption.charAt(0).toUpperCase() + deviceOption.slice(1)"></span>
+                    </flux:button>
+                </template>
+
+
+
+
+                <iframe
+                    x-bind:width="size[device].width"
+                    x-bind:height="size[device].height"
+
+                    x-ref
+                    x-transition
+
+                    srcdoc="{{ $email->html }}" class="min-h-96 max-h-screen overflow-y-scroll"></iframe>
+            </div>
+
         </flux:tab.panel>
 
         <flux:tab.panel name="text">
@@ -29,6 +66,22 @@
 
         <flux:tab.panel name="raw">
             <pre>{{$email->raw}}</pre>
+        </flux:tab.panel>
+
+        <flux:tab.panel name="attachments">
+            <div class="flex flex-col gap-2">
+                @foreach($email->getMedia('*') as $media)
+                    <div>
+                        <p class="text-sm text-gray-500">
+                            <strong>Name:</strong> {{ $media->name }}<br>
+                            <strong>Bytes:</strong> {{ $media->human_readable_size }}<br>
+                            <strong>Mime:</strong> {{ $media->mime_type }}<br>
+                            <strong>Url:</strong> <a href="{{ $media->getUrl() }}">{{ $media->getUrl() }}</a><br>
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+
         </flux:tab.panel>
 
 
