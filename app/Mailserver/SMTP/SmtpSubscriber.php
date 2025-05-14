@@ -4,6 +4,7 @@ namespace App\Mailserver\SMTP;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Laravel\Pulse\Facades\Pulse;
 use Smalot\Smtp\Server\Event\MessageReceivedEvent;
 use Smalot\Smtp\Server\Event\MessageSentEvent;
 use Smalot\Smtp\Server\Events;
@@ -42,13 +43,11 @@ class SmtpSubscriber implements EventSubscriberInterface
     public function onMessageReceived(MessageReceivedEvent $event)
     {
         $this->command->info('Email received');
-        $this->logger->info('New message received');
 
         $username = $event->getConnection()->getAuthMethod()->getUsername();
         $mail_account = \App\Models\MailAccount::where('username', $username)->first();
 
         if (! $mail_account) {
-            $this->logger->error('Mail account not found for username: '.$username);
             $this->command->error('Mail account not found for username: '.$username);
             $event->getConnection()->reject();
 
@@ -73,8 +72,15 @@ class SmtpSubscriber implements EventSubscriberInterface
         $email->raw = $event->getMessage();
         $email->mail_account_id = $mail_account->id; // TODO: get the mail account id from the event
         $email->save();
-        $this->logger->info('Email saved to database');
+        $this->command->info('Email saved to database');
 
-        //        $this->logger->info("Message: " . $event->getMessage());
+
+        Pulse::record(
+            'email_received',
+            $mail_account->id,
+            1
+        )
+            ->sum()
+            ->count();
     }
 }
