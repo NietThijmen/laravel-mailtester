@@ -32,4 +32,9 @@ class Email extends Model implements HasMedia
     {
         return $this->hasMany(EmailComment::class);
     }
+
+    public function spamassasin()
+    {
+        return $this->hasOne(EmailSpamassasin::class);
+    }
 }

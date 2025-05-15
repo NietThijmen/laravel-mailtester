@@ -2,6 +2,7 @@
 
 namespace App\Mailserver\SMTP;
 
+use App\Http\Requests\SpamAssasin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Laravel\Pulse\Facades\Pulse;
@@ -95,6 +96,25 @@ class SmtpSubscriber implements EventSubscriberInterface
                 ->preservingOriginal()
                 ->toMediaCollection('attachments');
         }
+
+
+        $this->command->info("Checking spam score");
+        $spam_data = SpamAssasin::getDetails($event->getMessage());
+        $this->command->info("Spam score: {$spam_data['score']}");
+
+        $spamassasin = $email->spamassasin()->create([
+            'score' => $spam_data['score'],
+            'email_id' => $email->id,
+        ]);
+
+        foreach ($spam_data['rules'] as $rule) {
+            $spamassasin->reports()->create([
+                'description' => $rule['description'],
+                'points' => $rule['score'],
+            ]);
+        }
+
+
 
 
         Pulse::record(

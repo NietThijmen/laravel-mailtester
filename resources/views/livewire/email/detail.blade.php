@@ -6,6 +6,7 @@
             'Text',
             'Raw',
             'Attachments',
+            'Spam',
             'Chat',
         ]"
     >
@@ -84,6 +85,23 @@
                     </div>
                 @endforeach
             </div>
+
+        </x-group.item>
+
+        <x-group.item name="Spam">
+            @if(!$email->spamassasin)
+                <h1>No spamassasin score found</h1>
+            @else
+                <p>Spamassasin score <span>{{$email->spamassasin?->score}}</span></p>
+                <br/>
+                <p>Score information: </p>
+                <ul>
+                    @foreach($email->spamassasin?->reports as $report)
+                        <li>
+                            <strong>{{ $report->points }}</strong>: {{ $report->description }}
+                        </li>
+                    @endforeach
+            @endif
 
         </x-group.item>
 
