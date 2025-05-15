@@ -1,19 +1,39 @@
 # Laravel mail tester
 Receive emails from other applications and view and comment on them in a web interface.
 
+## Features
+- Receive emails from other applications
+- Comment on emails for collaboration
+- View emails in HTML and text format
+- Use spamassassin to check for spam
+- View attachments
+- View email headers
+- Access to the raw email
+- Pretty dashboard (If I may say so myself)
 
 ## Screenshots
-### Summary
-![Summary](./.github/assets/summary.png)
+### Dashboard
+![Dashboard](.github/assets/dashboard.png)
 
-### E-mail HTML view
-![E-mail HTML view](./.github/assets/email.png)
+### Account overview
+![Account overview](.github/assets/email-overview.png)
+
+### Html view
+![Html view](.github/assets/email-html.png)
+
+### Text view
+![Text view](.github/assets/email-text.png)
 
 ### Attachments
-![E-mail text view](./.github/assets/attachments.png)
+![Attachments](.github/assets/email-attachments.png)
 
 ### Comments
-![E-mail text view](./.github/assets/chat.png)
+![Comments](.github/assets/email-chat.png)
+
+### Spam
+![Spam](.github/assets/email-spam.png)
+
+
 
 ## Installation
 1. Make sure you have php-mailparse installed. Read more on that [here](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
@@ -36,12 +56,16 @@ php artisan key:generate
 ```bash
 php artisan migrate
 ```
-6. Start the server (This is up to your environment, I'd just recommend Laravel Forge [https://forge.laravel.com/]):
 
 
 
 ## Running the service:
-This is once again up to your environment, but TL;DR: Make sure you are able to run the background process for php artisan mail:server
+Use the following command to run the service:
+```bash
+php artisan mail:server --port=2025
+```
+
+I'd recommend using a process manager like [supervisor](http://supervisord.org/) to run the service in the background.
 
 ## License
 The license can be found here: [LICENSE](./LICENSE.md)
@@ -55,5 +79,5 @@ There's not really support needed for a small project like this, but if you have
 ## Support me
 If you like this project and want to support me, please consider buying me a coffee. You can do so by clicking the button below:
 
-<a href="https://www.buymeacoffee.com/nietthijmen"><img src="https://img.buymeacoffee.com/button-api/?text=Support me&emoji=❤️&slug=nietthijmen&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=ffffff" /></a>
+<a href="https://www.buymeacoffee.com/nietthijmen"><img src="https://img.buymeacoffee.com/button-api/?text=Support me&emoji=❤️&slug=nietthijmen&button_colour=FFDD00&font_colour=000000&font_family=Inter&outline_colour=000000&coffee_colour=000000" /></a>
 
