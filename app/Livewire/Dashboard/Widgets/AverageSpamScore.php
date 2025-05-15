@@ -17,16 +17,9 @@ class AverageSpamScore extends Component
 
         $spam_per_account = [];
 
-        for($i = 0; $i < 10; $i++) {
-            $spam_per_account[] = [
-                'count' => 0,
-                'account' => 'No account',
-            ];
-        }
-
         foreach ($accounts as $account) {
             $spam_per_account[] = [
-                'count' => \App\Models\EmailSpamassasin::where('mail_account_id', $account->id)->avg('score'),
+                'count' => \App\Models\EmailSpamassasin::join('emails', 'email_spamassasins.email_id', '=', 'emails.id')->where('emails.mail_account_id', $account->id)->avg('score'),
                 'account' => $account->username,
             ];
         };

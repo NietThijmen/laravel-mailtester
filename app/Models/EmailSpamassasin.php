@@ -13,6 +13,11 @@ class EmailSpamassasin extends Model
         'score',
     ];
 
+    public function email()
+    {
+        return $this->belongsTo(Email::class);
+    }
+
     public function reports()
     {
         return $this->hasMany(EmailSpamAssasinReport::class);

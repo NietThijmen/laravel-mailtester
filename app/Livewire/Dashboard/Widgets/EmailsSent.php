@@ -19,13 +19,6 @@ class EmailsSent extends Component
 
         $mails_per_account = [];
 
-        for($i = 0; $i < 10; $i++) {
-            $mails_per_account[] = [
-                'count' => 0,
-                'account' => 'No account',
-            ];
-        }
-
         foreach ($accounts as $account) {
             $mails_per_account[] = [
                 'count' => Email::where('mail_account_id', $account->id)->count('id'),
