@@ -17,14 +17,21 @@
     <div class="flex">
         @foreach($items as $item)
             <button
+                class="px-2 py-1 text-sm"
                 x-on:click="
                     item = items[{{$loop->index}}]
                 "
-                class="px-2 py-1 text-sm rounded-md">
+                :class="
+                    item === '{{ $item }}' && 'border-b-blue-500 border-b-2'
+                "
+                >
                 {{$item}}
             </button>
         @endforeach
     </div>
+
+    <hr/>
+    <br/>
 
     {{$slot}}
 </div>
