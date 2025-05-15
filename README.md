@@ -16,44 +16,32 @@ Receive emails from other applications and view and comment on them in a web int
 ![E-mail text view](./.github/assets/chat.png)
 
 ## Installation
-1. Make sure you have a flux pro license key. You can get one [here](https://fluxui.dev/) (Read more on this [here](#why-i-chose-flux-pro)).
-2. Make sure you have php-mailparse installed. Read more on that [here](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
-3. Install the project using composer:
+1. Make sure you have php-mailparse installed. Read more on that [here](https://github.com/php-mime-mail-parser/php-mime-mail-parser)
+2. Install the project using composer:
 ```bash
 git clone git@github.com:NietThijmen/laravel-mailtester.git
 cd laravel-mailtester
 
 composer install
 ```
-4. Copy the `.env.example` file to `.env` and fill in the required values.
+3. Copy the `.env.example` file to `.env` and fill in the required values.
 ```bash
 cp .env.example .env
 ```
-5. Generate the application key:
+4. Generate the application key:
 ```bash
 php artisan key:generate
 ```
-6. Run the migrations:
+5. Run the migrations:
 ```bash
 php artisan migrate
 ```
-7. Start the server (This is up to your environment, I'd just recommend Laravel Forge [https://forge.laravel.com/]):
+6. Start the server (This is up to your environment, I'd just recommend Laravel Forge [https://forge.laravel.com/]):
 
 
 
 ## Running the service:
 This is once again up to your environment, but TL;DR: Make sure you are able to run the background process for php artisan mail:server
-
-
-
-
-## Why I chose Flux pro
-TL;DR: I like FluxUI
-
-Longer story:
-I'm terrible at frontend, that's appearant the more you look at the code.
-That's why I bought FluxUI. If someone wants to rewrite it so it doesn't use flux anymore please do so. 
-I just wanted to get something up and running quickly and I think it looks pretty good.
 
 ## License
 The license can be found here: [LICENSE](./LICENSE.md)
