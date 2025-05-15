@@ -34,7 +34,7 @@ class AccountOverview extends Component
     private function getMailsForPage()
     {
         $offset = $this->page * $this->perPage;
-        return $this->account->emails()->skip($offset)->take($this->perPage)->get();
+        return $this->account->emails()->orderBy('id', 'desc')->skip($offset)->take($this->perPage)->get();
     }
 
     public function updated($propertyName)
