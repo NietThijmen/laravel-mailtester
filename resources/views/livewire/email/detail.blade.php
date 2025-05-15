@@ -1,18 +1,19 @@
 <div>
-    <flux:tab.group class="w-full">
-        <flux:tabs wire:model="tab">
-            <flux:tab name="details">Details</flux:tab>
-            <flux:tab name="html">Html</flux:tab>
-            <flux:tab name="text">Text</flux:tab>
-            <flux:tab name="raw">Raw</flux:tab>
-            <flux:tab name="attachments" :disabled="!$has_attachments">Attachments</flux:tab>
+    <x-group.group class="w-full"
+        :items="[
+            'Details',
+            'Html',
+            'Text',
+            'Raw',
+            'Attachments',
+            'Chat',
+        ]"
+    >
 
-            <flux:tab name="chat">Chat</flux:tab>
-
-        </flux:tabs>
 
 
-        <flux:tab.panel name="details">
+
+        <x-group.item name="Details">
             <p class="text-sm text-gray-500">
                 <strong>To:</strong> {{ $email->to }}<br>
                 <strong>From:</strong> {{ $email->from }}<br>
@@ -20,8 +21,8 @@
                 <strong>Sent At:</strong> {{ $email->created_at }}<br>
             </p>
 
-        </flux:tab.panel>
-        <flux:tab.panel name="html">
+        </x-group.item>
+        <x-group.item name="Html">
             <div
                 x-data="{
                     device: 'desktop',
@@ -60,17 +61,17 @@
                     srcdoc="{{ $email->html }}" class="min-h-96 max-h-screen overflow-y-scroll"></iframe>
             </div>
 
-        </flux:tab.panel>
+        </x-group.item>
 
-        <flux:tab.panel name="text">
+        <x-group.item name="Text">
             <pre>{{$email->text}}</pre>
-        </flux:tab.panel>
+        </x-group.item>
 
-        <flux:tab.panel name="raw">
+        <x-group.item name="Raw">
             <pre>{{$email->raw}}</pre>
-        </flux:tab.panel>
+        </x-group.item>
 
-        <flux:tab.panel name="attachments">
+        <x-group.item name="Attachments">
             <div class="flex flex-col gap-2">
                 @foreach($email->getMedia('*') as $media)
                     <div>
@@ -84,9 +85,9 @@
                 @endforeach
             </div>
 
-        </flux:tab.panel>
+        </x-group.item>
 
-        <flux:tab.panel name="chat" wire:poll>
+        <x-group.item name="Chat" wire:poll>
             @foreach($email->comments as $comment)
                 <div class="flex flex-col gap-2">
                     <p class="text-sm text-gray-500">
@@ -106,9 +107,9 @@
                 />
                 <flux:button wire:click="addComment">Add Comment</flux:button>
             </div>
-        </flux:tab.panel>
+        </x-group.item>
 
 
 
-        </flux:tab.group>
+        </x-group.group>
 </div>

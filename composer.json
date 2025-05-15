@@ -15,7 +15,6 @@
         "laravel/pulse": "^1.4",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.1.1",
-        "livewire/flux-pro": "^2.1",
         "livewire/volt": "^1.7.0",
         "nietthijmen/smtp-server": "dev-master",
         "php-mime-mail-parser/php-mime-mail-parser": "^9.0",
