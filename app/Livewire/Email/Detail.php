@@ -9,6 +9,7 @@ class Detail extends Component
 {
     public Email $email;
     public $has_attachments = false;
+    public $has_spam = false;
 
     public $comment;
 
@@ -18,6 +19,10 @@ class Detail extends Component
 
         if ($this->email->hasMedia('attachments')) {
             $this->has_attachments = true;
+        }
+
+        if($this->email->spamassasin) {
+            $this->has_spam = true;
         }
     }
 
@@ -33,6 +38,12 @@ class Detail extends Component
             ]);
             $this->comment = '';
         }
+    }
+
+    public function deleteEmail()
+    {
+        $this->email->delete();
+        $this->redirectRoute('account.overview', $this->email->account);
     }
 
     public function render()
