@@ -48,10 +48,10 @@ class TestMail extends Mailable
      */
     public function attachments(): array
     {
-        $attachment = Attachment::fromUrl("https://placehold.co/400.png")->as('test.png');
+        $attachment = Attachment::fromUrl('https://placehold.co/400.png')->as('test.png');
 
         return [
-            $attachment
+            $attachment,
         ];
     }
 }

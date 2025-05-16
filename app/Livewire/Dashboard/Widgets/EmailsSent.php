@@ -10,7 +10,6 @@ use Livewire\Component;
 #[Lazy]
 class EmailsSent extends Component
 {
-
     public $emailsSentPerMailbox = [];
 
     public function mount()
@@ -24,7 +23,7 @@ class EmailsSent extends Component
                 'count' => Email::where('mail_account_id', $account->id)->count('id'),
                 'account' => $account->username,
             ];
-        };
+        }
 
         usort($mails_per_account, function ($a, $b) {
             return $b['count'] <=> $a['count'];

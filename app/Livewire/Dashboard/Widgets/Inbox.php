@@ -10,7 +10,6 @@ use Livewire\Component;
 #[Lazy]
 class Inbox extends Component
 {
-
     public Collection $emails;
 
     public function mount()

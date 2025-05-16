@@ -9,8 +9,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Email extends Model implements HasMedia
 {
-    use SoftDeletes;
     use InteractsWithMedia;
+    use SoftDeletes;
 
     protected $fillable = [
         'from',

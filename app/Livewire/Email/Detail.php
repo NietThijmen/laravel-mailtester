@@ -8,7 +8,9 @@ use Livewire\Component;
 class Detail extends Component
 {
     public Email $email;
+
     public $has_attachments = false;
+
     public $has_spam = false;
 
     public $comment;
@@ -21,7 +23,7 @@ class Detail extends Component
             $this->has_attachments = true;
         }
 
-        if($this->email->spamassasin) {
+        if ($this->email->spamassasin) {
             $this->has_spam = true;
         }
     }

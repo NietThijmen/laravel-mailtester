@@ -55,7 +55,6 @@
                                     <strong>Comment: </strong><span class="text-sm text-gray-500 dark:text-gray-400">{{ $report->description }}</span>
                                 </p>
                             @endforeach
-{{--                            <p>Spam Report: {{ $email->spam_report }}</p>--}}
                         </div>
                     @endif
                 </div>

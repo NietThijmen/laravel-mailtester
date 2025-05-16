@@ -8,7 +8,6 @@ use Livewire\Component;
 #[Lazy]
 class AverageSpamScore extends Component
 {
-
     public $spamPerMailbox = [];
 
     public function mount()
@@ -22,7 +21,7 @@ class AverageSpamScore extends Component
                 'count' => \App\Models\EmailSpamassasin::join('emails', 'email_spamassasins.email_id', '=', 'emails.id')->where('emails.mail_account_id', $account->id)->avg('score'),
                 'account' => $account->username,
             ];
-        };
+        }
 
         usort($spam_per_account, function ($a, $b) {
             return $b['count'] <=> $a['count'];

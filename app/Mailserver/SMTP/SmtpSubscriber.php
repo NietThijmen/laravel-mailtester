@@ -6,7 +6,6 @@ use App\Http\Requests\SpamAssasin;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Laravel\Pulse\Facades\Pulse;
-use Psy\Util\Str;
 use Smalot\Smtp\Server\Event\MessageReceivedEvent;
 use Smalot\Smtp\Server\Event\MessageSentEvent;
 use Smalot\Smtp\Server\Events;
@@ -76,11 +75,9 @@ class SmtpSubscriber implements EventSubscriberInterface
         $email->save();
         $this->command->info('Email saved to database');
 
-
-
         $attachments = $parser->getAttachments();
-        if(count($attachments) == 0) {
-            $this->command->info("No attachments found");
+        if (count($attachments) == 0) {
+            $this->command->info('No attachments found');
         }
 
         foreach ($attachments as $attachment) {
@@ -97,8 +94,7 @@ class SmtpSubscriber implements EventSubscriberInterface
                 ->toMediaCollection('attachments');
         }
 
-
-        $this->command->info("Checking spam score");
+        $this->command->info('Checking spam score');
         $spam_data = SpamAssasin::getDetails($event->getMessage());
         $this->command->info("Spam score: {$spam_data['score']}");
 
@@ -113,9 +109,6 @@ class SmtpSubscriber implements EventSubscriberInterface
                 'points' => $rule['score'],
             ]);
         }
-
-
-
 
         Pulse::record(
             'email_received',

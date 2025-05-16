@@ -6,11 +6,10 @@ class SpamAssasin
 {
     public static function getDetails(
         string $rawMail
-    ): array
-    {
-        $data = \Http::post("https://spamcheck.postmarkapp.com/filter", [
+    ): array {
+        $data = \Http::post('https://spamcheck.postmarkapp.com/filter', [
             'email' => $rawMail,
-            'options' => 'long'
+            'options' => 'long',
         ])->json();
 
         return $data;

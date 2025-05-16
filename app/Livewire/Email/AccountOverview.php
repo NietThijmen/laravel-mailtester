@@ -13,11 +13,12 @@ class AccountOverview extends Component
 
     #[Url('page')]
     public int $page = 0;
+
     public int $perPage = 10;
-    public int $pages =0; // total number of pages
+
+    public int $pages = 0; // total number of pages
 
     public Collection $emails;
-
 
     public function mount(MailAccount $account)
     {
@@ -45,13 +46,14 @@ class AccountOverview extends Component
     private function getMailsForPage()
     {
         $offset = $this->page * $this->perPage;
+
         return $this->account->emails()->orderBy('id', 'desc')->skip($offset)->take($this->perPage)->get();
     }
 
     public function updated($propertyName)
     {
 
-        if($propertyName === "page") {
+        if ($propertyName === 'page') {
             $this->emails = $this->getMailsForPage();
         }
     }
