@@ -9,19 +9,7 @@
             </p>
         </div>
         <div class="flex items-center gap-2">
-
-
-
-            {{--Share menu--}}
-            <x-context.wrapper class="p-2">
-                <flux:icon name="share" class="cursor-context-menu"></flux:icon>
-
-                <x-context.menu
-                    class="bg-white dark:bg-neutral-800 shadow-md rounded-lg p-4 shadow">
-                
-                    <h1>Share links here!</h1>
-                </x-context.menu>
-            </x-context.wrapper>
+            
 
             {{--Forward menu--}}
             <x-context.wrapper class="p-2">
