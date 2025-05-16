@@ -9,6 +9,53 @@
             </p>
         </div>
         <div class="flex items-center gap-2">
+
+
+
+            {{--Share menu--}}
+            <x-context.wrapper class="p-2">
+                <flux:icon name="share" class="cursor-context-menu"></flux:icon>
+
+                <x-context.menu
+                    class="bg-white dark:bg-neutral-800 shadow-md rounded-lg p-4 shadow">
+                
+                    <h1>Share links here!</h1>
+                </x-context.menu>
+            </x-context.wrapper>
+
+            {{--Forward menu--}}
+            <x-context.wrapper class="p-2">
+                <flux:icon name="forward" class="cursor-context-menu"></flux:icon>
+
+                <x-context.menu
+                    side="right"
+                    class="bg-white dark:bg-neutral-800 shadow-md rounded-lg p-4 shadow">
+
+                    <div x-data="{
+                        email: null
+                    }">
+
+                        <flux:input
+                            type="text"
+                            label="Email"
+                            placeholder="Enter email address"
+                            x-model="email"/>
+
+
+                        <flux:button
+                            x-on:click="
+                                $wire.forwardEmail(email)
+                            "
+                        >
+                            Send
+                        </flux:button>
+                    </div>
+
+                </x-context.menu>
+
+            </x-context.wrapper>
+
+
             <flux:button class="px-3 py-1 text-sm " variant="danger" wire:click="deleteEmail" icon="trash"></flux:button>
         </div>
     </div>
