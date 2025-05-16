@@ -1,133 +1,106 @@
-<div>
-    <x-group.group class="w-full"
-        :items="[
-            'Details',
-            'Html',
-            'Text',
-            'Raw',
-            'Attachments',
-            'Spam',
-            'Chat',
-        ]"
-    >
-
-
-
-
-        <x-group.item name="Details">
-            <p class="text-sm text-gray-500">
-                <strong>To:</strong> {{ $email->to }}<br>
+<div class="flex flex-col bg-white dark:bg-neutral-800 rounded-lg shadow-md overflow-hidden">
+    <!-- Header -->
+    <div class="p-4 border-b border-neutral-200 dark:border-neutral-700 flex justify-between items-center">
+        <div>
+            <h1 class="text-lg font-semibold text-gray-900 dark:text-white">{{ $email->header }}</h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
                 <strong>From:</strong> {{ $email->from }}<br>
-                <strong>Subject:</strong> {{ $email->header }}<br>
-                <strong>Sent At:</strong> {{ $email->created_at }}<br>
+                <strong>To:</strong> {{ $email->to }}
             </p>
+        </div>
+        <div class="flex items-center gap-2">
+            <flux:button class="px-3 py-1 text-sm " variant="danger" wire:click="deleteEmail" icon="trash"></flux:button>
+        </div>
+    </div>
 
-        </x-group.item>
-        <x-group.item name="Html">
-            <div
-                x-data="{
-                    device: 'desktop',
-                    devices: ['desktop', 'tablet', 'mobile'],
+    <!-- Email Content -->
+    <div class="p-4">
 
-                    size: {
-                        desktop: { width: 960, height: 540 }, // Desktop (scale: 50%)
-                        tablet: { width: 834, height: 1194 }, // Ipad Pro
-                        mobile: { width: 590, height: 1278 } // Iphone X
-                    },
-                }"
-            >
+        @php
+            $items = ['Html', 'Text'];
+            if($has_spam) {
+                $items[] = "Spam";
+            }
+        @endphp
 
-                <template x-for="deviceOption in devices">
-                    <flux:button
-                        x-on:click="
-                        device = deviceOption;
-                        "
+        <x-group.group
+            :items="$items">
 
-                        class="px-2 py-1 text-sm rounded-md"
-                    >
-                        <span x-text="deviceOption.charAt(0).toUpperCase() + deviceOption.slice(1)"></span>
-                    </flux:button>
-                </template>
-
-
-
-
-                <iframe
-                    x-bind:width="size[device].width"
-                    x-bind:height="size[device].height"
-
-                    x-ref
-                    x-transition
-
-                    srcdoc="{{ $email->html }}" class="min-h-96 max-h-screen overflow-y-scroll"></iframe>
-            </div>
-
-        </x-group.item>
-
-        <x-group.item name="Text">
-            <pre>{{$email->text}}</pre>
-        </x-group.item>
-
-        <x-group.item name="Raw">
-            <pre>{{$email->raw}}</pre>
-        </x-group.item>
-
-        <x-group.item name="Attachments">
-            <div class="flex flex-col gap-2">
-                @foreach($email->getMedia('*') as $media)
-                    <div>
-                        <p class="text-sm text-gray-500">
-                            <strong>Name:</strong> {{ $media->name }}<br>
-                            <strong>Bytes:</strong> {{ $media->human_readable_size }}<br>
-                            <strong>Mime:</strong> {{ $media->mime_type }}<br>
-                            <strong>Url:</strong> <a href="{{ $media->getUrl() }}">{{ $media->getUrl() }}</a><br>
-                        </p>
+            <x-group.item name="Text">
+                <div class="mb-4">
+                    <h2 class="text-sm font-medium text-gray-700 dark:text-gray-300">Message</h2>
+                    <div class="mt-2 text-sm text-gray-900 dark:text-gray-200">
+                        {!! nl2br(e($email->text)) !!}
                     </div>
-                @endforeach
-            </div>
-
-        </x-group.item>
-
-        <x-group.item name="Spam">
-            @if(!$email->spamassasin)
-                <h1>No spamassasin score found</h1>
-            @else
-                <p>Spamassasin score <span>{{$email->spamassasin?->score}}</span></p>
-                <br/>
-                <p>Score information: </p>
-                <ul>
-                    @foreach($email->spamassasin?->reports as $report)
-                        <li>
-                            <strong>{{ $report->points }}</strong>: {{ $report->description }}
-                        </li>
-                    @endforeach
-            @endif
-
-        </x-group.item>
-
-        <x-group.item name="Chat" wire:poll>
-            @foreach($email->comments as $comment)
-                <div class="flex flex-col gap-2">
-                    <p class="text-sm text-gray-500">
-                        <strong>From:</strong> {{ $comment->user->name }}<br>
-                        <strong>Created At:</strong> {{ $comment->created_at }}<br>
-                        <strong>Comment:</strong> {{ $comment->message }}<br>
-                    </p>
                 </div>
-            @endforeach
+            </x-group.item>
 
+            <x-group.item name="Html">
+                                <div class="mb-4">
+                                    <h2 class="text-sm font-medium text-gray-700 dark:text-gray-300">Html</h2>
+                                    <iframe class="w-full h-full min-h-screen" srcdoc="{{$email->html}}"></iframe>
+                                </div>
+            </x-group.item>
 
-            <div class="flex flex-col gap-2 mt-5">
-                <flux:textarea
-                    :label="__('Comment')"
-                    wire:model.defer="comment"
-                    :placeholder="__('Add a comment')"
-                />
-                <flux:button wire:click="addComment">Add Comment</flux:button>
-            </div>
-        </x-group.item>
+            <x-group.item name="Spam">
+                <div class="mb-4">
+                    <h2 class="text-sm font-medium text-gray-700 dark:text-gray-300">Spam</h2>
 
-
+                    @if($has_spam)
+                        <div class="mt-2 text-sm text-gray-900 dark:text-gray-200">
+                            <p>Spam Score: {{ $email->spamassasin->score }}</p>
+                            @foreach($email->spamassasin->reports as $report)
+                                <p class="my-4">
+                                    <strong>Points: </strong> {{ $report->points }}<br>
+                                    <strong>Comment: </strong><span class="text-sm text-gray-500 dark:text-gray-400">{{ $report->description }}</span>
+                                </p>
+                            @endforeach
+{{--                            <p>Spam Report: {{ $email->spam_report }}</p>--}}
+                        </div>
+                    @endif
+                </div>
+            </x-group.item>
 
         </x-group.group>
+
+        @if($has_attachments)
+            <div class="mt-4">
+                <h2 class="text-sm font-medium text-gray-700 dark:text-gray-300">Attachments</h2>
+                <div class="mt-2 flex flex-wrap gap-4">
+                    @foreach($email->getMedia('*') as $media)
+                        <div class="p-2 border border-neutral-200 dark:border-neutral-700 rounded-md">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                <strong>{{ $media->name }}</strong> ({{$media->human_readable_size}})<br>
+                                <a href="{{ $media->getUrl() }}" class="text-blue-500 dark:text-blue-400">Download</a>
+                            </p>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
+    </div>
+
+    <!-- Comments Section -->
+    <div class="p-4 border-t border-neutral-200 dark:border-neutral-700">
+        <h2 class="text-sm font-medium text-gray-700 dark:text-gray-300">Comments</h2>
+        <div class="mt-2 space-y-4">
+            @foreach($email->comments as $comment)
+                <div class="p-3 bg-neutral-100 dark:bg-neutral-700 rounded-md">
+                    <p class="text-sm text-gray-900 dark:text-white">
+                        <strong>{{ $comment->user->name }}</strong> - {{ $comment->created_at->diffForHumans() }}
+                    </p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300">{{ $comment->message }}</p>
+                </div>
+            @endforeach
+        </div>
+
+        <div class="mt-4">
+            <flux:textarea
+                :label="__('Add a comment')"
+                wire:model.defer="comment"
+                :placeholder="__('Write your comment here...')"
+            />
+            <flux:button class="mt-2" wire:click="addComment">Post Comment</flux:button>
+        </div>
+    </div>
 </div>

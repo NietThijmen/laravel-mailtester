@@ -31,6 +31,17 @@ class AccountOverview extends Component
         $this->emails = $this->getMailsForPage();
     }
 
+    public function deleteEmail($id)
+    {
+        $email = $this->account->emails()->find($id);
+        if ($email) {
+            $email->delete();
+            $this->emails = $this->getMailsForPage();
+
+            sleep(0.5); // so that the page doesn't refresh too fast
+        }
+    }
+
     private function getMailsForPage()
     {
         $offset = $this->page * $this->perPage;

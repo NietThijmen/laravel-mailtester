@@ -21,11 +21,8 @@ Receive emails from other applications and view and comment on them in a web int
 ### Html view
 ![Html view](.github/assets/email-html.png)
 
-### Text view
+### Text view & Attachments
 ![Text view](.github/assets/email-text.png)
-
-### Attachments
-![Attachments](.github/assets/email-attachments.png)
 
 ### Comments
 ![Comments](.github/assets/email-chat.png)
