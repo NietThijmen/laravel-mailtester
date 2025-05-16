@@ -9,34 +9,68 @@
         @if($emails->count() > 0)
             <ul class="divide-y divide-gray-200 dark:divide-neutral-700">
                 @foreach($emails as $email)
-                    <li class="hover:bg-gray-50 dark:hover:bg-neutral-700/50 transition-colors duration-150 cursor-pointer group">
-                        <div class="block p-4">
-                            <a href="{{ route('emails.detail', $email->id) }}">
-                                <div class="flex justify-between">
-                                    <span class="font-medium text-gray-900 dark:text-white truncate max-w-[40%]">{{ $email->from }}</span>
-                                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ $email->created_at->diffForHumans() }}</span>
-                                </div>
-                                <div class="mt-1 text-sm text-gray-900 dark:text-gray-200 font-medium truncate">{{ $email->subject }}</div>
-                                <div class="mt-1 text-xs text-gray-500 dark:text-gray-400 truncate">
-                                    To: {{ $email->to }}
-                                </div>
+                    <x-context.wrapper>
+                        <li class="hover:bg-gray-50 dark:hover:bg-neutral-700/50 transition-colors duration-150 cursor-pointer group">
+                            <div class="block p-4">
+                                <a href="{{ route('emails.detail', $email->id) }}">
+                                    <div class="flex justify-between">
+                                        <span class="font-medium text-gray-900 dark:text-white truncate max-w-[40%]">{{ $email->from }}</span>
+                                        <span class="text-xs text-gray-500 dark:text-gray-400">{{ $email->created_at->diffForHumans() }}</span>
+                                    </div>
+                                    <div class="mt-1 text-sm text-gray-900 dark:text-gray-200 font-medium truncate">{{ $email->subject }}</div>
+                                    <div class="mt-1 text-xs text-gray-500 dark:text-gray-400 truncate">
+                                        To: {{ $email->to }}
+                                    </div>
 
-                                <div class="mt-1 text-sm text-gray-500 dark:text-gray-400 truncate">
-                                    {{ Str::limit($email->header, 50) }}
+                                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-400 truncate">
+                                        {{ Str::limit($email->header, 50) }}
+                                    </div>
+                                </a>
+
+
+                                <div class="mt-1 text-sm text-gray-500 dark:text-gray-400 truncate flex z-10">
+                                    <flux:button
+                                        wire:click="deleteEmail({{$email->id}})"
+                                        icon="trash"
+                                        variant="danger"
+                                        class="ml-auto z-10"
+                                    ></flux:button>
                                 </div>
-                            </a>
+                            </div>
+                        </li>
+
+                        <x-context.menu
+                            side="right"
+                            class="bg-white dark:bg-neutral-800 shadow-md rounded-lg p-4 shadow">
 
 
-                            <div class="mt-1 text-sm text-gray-500 dark:text-gray-400 truncate flex z-10">
+
+                            <div class="flex flex-col gap-2">
+                                <flux:button
+                                    href="{{ route('emails.detail', $email->id) }}"
+                                    icon="eye"
+                                    class="w-full text-left"
+                                >View</flux:button>
+
+                                <flux:button
+                                    x-on:click="navigator.clipboard.writeText('{{route('emails.detail', $email->id)}}'); isOpen = false;"
+                                    icon="clipboard"
+                                    class="w-full text-left"
+                                >Copy link</flux:button>
+
                                 <flux:button
                                     wire:click="deleteEmail({{$email->id}})"
                                     icon="trash"
                                     variant="danger"
-                                    class="ml-auto z-10"
-                                ></flux:button>
+                                    class="w-full text-left z-10"
+                                >
+                                    Delete
+                                </flux:button>
                             </div>
-                        </div>
-                    </li>
+                        </x-context.menu>
+
+
+                    </x-context.wrapper>
                 @endforeach
             </ul>
 

@@ -3,6 +3,10 @@
 namespace App\Livewire\Email;
 
 use App\Models\Email;
+use Illuminate\Mail\Attachment;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class Detail extends Component
@@ -40,6 +44,31 @@ class Detail extends Component
             ]);
             $this->comment = '';
         }
+    }
+
+    public function forwardEmail(
+        string $to
+    )
+    {
+        $html_content = $this->email->html;
+        $text_content = $this->email->text;
+        $subject = $this->email->header;
+        $from = $this->email->from;
+        $to = $to ?: $this->email->to;
+
+
+        $attachments = [];
+        foreach ($this->email->getMedia('*') as $attachment) {
+            $attachments[] = Attachment::fromPath($attachment->getPath())->as($attachment->file_name);
+        }
+
+
+        $mailable = (new Mailable())
+            ->subject("Fwd: $subject")
+            ->html($html_content)
+            ->attachMany($attachments);
+
+        Mail::to($to)->send($mailable);
     }
 
     public function deleteEmail()
