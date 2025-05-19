@@ -13,6 +13,7 @@
                     <div class="w-full bg-gray-200 rounded-full h-2">
                         @php
                             $maxScore = max(array_column($spamPerMailbox, 'count')) ?: 1;
+                            if($maxScore === 0) $maxScore = 1;
                             $percentage = ($spam['count'] / $maxScore) * 100;
                         @endphp
                         <div class="bg-orange-600 h-2 rounded-full" style="width: {{ $percentage }}%"></div>
